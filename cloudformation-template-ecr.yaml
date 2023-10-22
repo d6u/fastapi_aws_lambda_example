@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  For working with containers on AWS, you need a container registry to
+  push container images.
+
+Parameters:
+  EcrRepositoryNameForLambda:
+    Type: String
+    Default: test-lambda
+
+Resources:
+  # --- Lambda Image Repository ---
+  EcrRepositoryForLambda:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Ref EcrRepositoryNameForLambda
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      ImageTagMutability: IMMUTABLE
+
+Outputs:
+  RepositoryUriForLambda:
+    Value: !GetAtt EcrRepositoryForLambda.RepositoryUri
